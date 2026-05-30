@@ -265,7 +265,7 @@ function scheduleLoop(t0) {
         ch = CHORDS[bar];
         t  = t0 + bar * BAR;
         [ch.root, ch.third, ch.fifth, ch.root * 2].forEach(function(f) {
-            playNote(f, t, BAR - 0.1, 'sine', 0.04, (Math.random() * 4 - 2));
+            playNote(f, t, BAR - 0.1, 'sine', 0.025, (Math.random() * 4 - 2));
         });
     }
     // Arpeggio
@@ -274,22 +274,23 @@ function scheduleLoop(t0) {
         notes = [ch.root, ch.third, ch.fifth, ch.third];
         t = t0 + b * BEAT;
         notes.forEach(function(f, idx) {
-            playNote(f * 2, t + idx * (BEAT / 4), BEAT / 4, 'triangle', 0.055);
+            playNote(f * 2, t + idx * (BEAT / 4), BEAT / 4, 'sine', 0.038);
         });
     }
     // Bass
     for (bar = 0; bar < 4; bar++) {
         ch = CHORDS[bar];
         t  = t0 + bar * BAR;
-        playNote(ch.root / 2, t,            BEAT * 1.9, 'sine', 0.11);
-        playNote(ch.root / 2, t + BAR / 2, BEAT * 1.9, 'sine', 0.09);
+        playNote(ch.root / 2, t,            BEAT * 1.9, 'sine', 0.08);
+        playNote(ch.root / 2, t + BAR / 2, BEAT * 1.9, 'sine', 0.065);
     }
     // Melody
     MELODY.forEach(function(note) {
         var f = note[0], beat = note[1];
         var nt = t0 + beat * BEAT;
-        playNote(f,        nt, BEAT * 0.8, 'sine', 0.17);
-        playNote(f * 1.25, nt, BEAT * 0.8, 'sine', 0.055);
+        playNote(f, nt, BEAT * 0.8, 'sine', 0.13);
+        // Harmonic ringan saja — bukan 1.25x (interval minor 3rd yg bikin kasar)
+        playNote(f * 2, nt, BEAT * 0.8, 'sine', 0.03);
     });
 }
 
@@ -314,7 +315,17 @@ function startMusic() {
         }
         masterGain = audioCtx.createGain();
         masterGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
-        masterGain.connect(audioCtx.destination);
+
+        // DynamicsCompressor = mencegah clipping/distorsi di speaker HP kecil
+        var compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-18, audioCtx.currentTime); // mulai compress di -18dB
+        compressor.knee.setValueAtTime(6, audioCtx.currentTime);        // soft knee
+        compressor.ratio.setValueAtTime(4, audioCtx.currentTime);       // 4:1 ratio — halus
+        compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);  // cepat tangkap peak
+        compressor.release.setValueAtTime(0.25, audioCtx.currentTime);  // natural release
+
+        masterGain.connect(compressor);
+        compressor.connect(audioCtx.destination);
     }
     if (audioCtx.state === 'suspended') {
         audioCtx.resume().then(function() { _beginPlayback(); });
@@ -326,7 +337,7 @@ function startMusic() {
 function _beginPlayback() {
     masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
     masterGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.5);
+    masterGain.gain.linearRampToValueAtTime(0.38, audioCtx.currentTime + 1.5);
     nextNoteTime = audioCtx.currentTime + 0.15;
     isPlaying = true;
     scheduler();
