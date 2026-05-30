@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Adellia</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Efek hati jatuh -->
+    <div class="hearts-bg"></div>
+
+    <div class="container">
+        <div class="card">
+            <!-- Bagian Kue -->
+            <div class="cake-area">
+                <div class="cake">
+                    <div class="cream"></div>
+                    <div class="candle"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+            
+            <!-- Bagian Teks -->
+            <div class="text-area">
+                <h1 class="title">Happy Birthday 🎉</h1>
+                <h2 class="name">Adellia Putri Fernandess</h2>
+                
+                <p class="message">
+                    <span class="nickname">bubub</span>,<br><br>
+                    Selamat ulang tahun!<br>
+                    Hope your day is as amazing as you are.<br><br>
+                    Stay healthy and keep smiling! 😄
+                </p>
+                
+                <!-- Puzzle Section -->
+                <div class="puzzle-container">
+                    <p class="puzzle-hint">Susun Tanggal Jadian Kita! 📅</p>
+                    <div id="puzzle-pieces" class="puzzle-pieces">
+                        <!-- Pieces akan di-generate oleh JS -->
+                    </div>
+                    <div id="puzzle-answer" class="puzzle-answer"></div>
+                    <p id="puzzle-result" class="puzzle-result"></p>
+                </div>
+                
+                <!-- Tombol Buka Kejutan -->
+                <button id="btn-gift" class="btn" disabled>Buka Kejutan 🎁</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kejutan -->
+    <div id="gift-overlay" class="overlay">
+        <div class="gift-content">
+            <h1>🎂 Happy Birthday! 🎂</h1>
+            <p>Adellia,</p>
+            <p>Selamat ulang tahun yang ke-21!<br>
+            Hope all your wishes come true this year.<br>
+            Mari kita buat banyak kenangan baru!</p>
+            <p class="from">Love, Pacar Kamu ❤️</p>
+            <button id="close-gift" class="btn-close">Tutup</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
