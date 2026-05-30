@@ -968,3 +968,98 @@ body {
     .title { font-size: 2.5rem; }
     .name { font-size: 1.2rem; }
 }
+
+/* ======= DESKTOP ENHANCEMENTS ======= */
+@media (min-width: 768px) {
+    body {
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 120px;
+    }
+
+    .card-wrapper {
+        max-width: 480px;
+        padding: 24px;
+    }
+
+    .card {
+        padding: 36px 32px;
+        border-radius: 32px;
+    }
+
+    .cake-area {
+        width: 130px;
+        height: 120px;
+        margin-bottom: 24px;
+    }
+
+    .cake-plate  { width: 100px; height: 10px; }
+    .cake-bottom { width: 90px;  height: 32px; bottom: 10px; }
+    .cake-middle { width: 75px;  height: 28px; bottom: 42px; }
+    .cake-top    { width: 60px;  height: 22px; bottom: 70px; }
+    .cream-swiggles { width: 98px; bottom: 41px; }
+    .swiggles-top   { width: 75px; bottom: 69px; }
+    .candles { bottom: 91px; gap: 14px; }
+    .candle-body { width: 9px; height: 22px; }
+    .flame { width: 8px; height: 13px; }
+    .swiggle { width: 13px; height: 13px; }
+
+    .title { font-size: 2.8rem; }
+    .name  { font-size: 1.25rem; }
+
+    .message { font-size: 0.95rem; }
+
+    .puzzle-container { padding: 20px 18px; }
+    .puzzle-piece {
+        padding: 10px 14px;
+        font-size: 1rem;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    .puzzle-answer { font-size: 1.1rem; letter-spacing: 4px; }
+
+    .btn-gift {
+        padding: 15px 36px;
+        font-size: 1rem;
+        max-width: 220px;
+    }
+
+    .music-btn { width: 56px; height: 56px; font-size: 1.5rem; }
+    .music-label { font-size: 0.75rem; }
+
+    .gift-card {
+        max-width: 380px;
+        padding: 36px 28px;
+    }
+    .gift-title { font-size: 2.2rem; }
+    .gift-message { font-size: 0.92rem; }
+}
+
+/* Hover states untuk desktop mouse */
+@media (hover: hover) {
+    .puzzle-piece:hover:not(.used) {
+        background-color: rgba(232,82,122,0.5);
+        border-color: rgba(232,82,122,0.9);
+        transform: translateY(-2px);
+        transition: all 0.15s ease;
+    }
+
+    .btn-gift:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(232,82,122,0.6);
+    }
+
+    .music-btn:hover {
+        transform: scale(1.08);
+    }
+
+    .btn-close:hover {
+        background-color: rgba(255,255,255,0.18);
+        color: white;
+    }
+
+    .reset-btn:hover {
+        color: rgba(255,255,255,0.9);
+        border-color: rgba(255,255,255,0.5);
+    }
+}

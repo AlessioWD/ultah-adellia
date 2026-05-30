@@ -1,45 +1,38 @@
 /* ============================================
    Happy Birthday Adellia — script.js
-   Fixed: kompatibel Realme 5i, Samsung A32, Android 9+
+   Final version: desktop + mobile sempurna
    ============================================ */
 
-// ======= PAUSE WHEN TAB HIDDEN =======
+// ======= VISIBILITY =======
 var appPaused = false;
 document.addEventListener('visibilitychange', function() {
     appPaused = document.hidden;
-    if (appPaused && audioCtx && audioCtx.state === 'running') {
-        audioCtx.suspend();
-    } else if (!appPaused && audioCtx && audioCtx.state === 'suspended' && isPlaying) {
-        audioCtx.resume();
-    }
 });
 
-// ======= STARS BACKGROUND =======
+// ======= STARS =======
 var starsContainer = document.getElementById('stars-container');
-var starCount = window.innerWidth < 500 ? 40 : 80;
-for (var i = 0; i < starCount; i++) {
+var starCount = window.innerWidth < 768 ? 50 : 100;
+for (var si = 0; si < starCount; si++) {
     var star = document.createElement('div');
     star.className = 'star';
-    var size = Math.random() * 2.5 + 0.5;
-    star.style.width = size + 'px';
-    star.style.height = size + 'px';
+    var sz = Math.random() * 2.5 + 0.5;
+    star.style.width = sz + 'px';
+    star.style.height = sz + 'px';
     star.style.left = (Math.random() * 100) + '%';
     star.style.top = (Math.random() * 100) + '%';
-    // CSS custom properties — didukung semua Android 5+
     star.style.setProperty('--dur', (Math.random() * 3 + 2).toFixed(2) + 's');
     star.style.setProperty('--delay', (Math.random() * 4).toFixed(2) + 's');
     starsContainer.appendChild(star);
 }
 
-// ======= FALLING PARTICLES =======
+// ======= PARTICLES =======
 var particleEmojis = ['❤️','💕','💖','💗','✨','🌸','💓','💞','⭐','💝'];
 var particlesBg = document.getElementById('particles-bg');
 var particleCount = 0;
-var MAX_PARTICLES = 12;
+var MAX_PARTICLES = window.innerWidth < 768 ? 10 : 20;
 
 function createParticle() {
-    if (appPaused) return;
-    if (particleCount >= MAX_PARTICLES) return;
+    if (appPaused || particleCount >= MAX_PARTICLES) return;
     particleCount++;
     var p = document.createElement('div');
     p.className = 'particle';
@@ -49,54 +42,48 @@ function createParticle() {
     p.style.fontSize = (Math.random() * 10 + 12).toFixed(1) + 'px';
     p.style.animationDuration = dur + 's';
     particlesBg.appendChild(p);
-    var removeAfter = (parseFloat(dur) * 1000) + 200;
     setTimeout(function() {
         if (p.parentNode) p.parentNode.removeChild(p);
         particleCount--;
-    }, removeAfter);
+    }, parseFloat(dur) * 1000 + 200);
 }
+setInterval(createParticle, 800);
+setInterval(createParticle, 1500);
 
-setInterval(createParticle, 900);
-setInterval(createParticle, 1700);
-
-// ======= PUZZLE LOGIC =======
+// ======= PUZZLE =======
 var correctAnswer = "20JUNI2024";
 var currentAnswer = "";
 var pieces = ["2","0","J","U","N","I","2","0","2","4"];
+var shuffledPieces = shuffle(pieces);
 
 function shuffle(arr) {
     var a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = a[i]; a[i] = a[j]; a[j] = temp;
+        var t = a[i]; a[i] = a[j]; a[j] = t;
     }
     return a;
 }
 
-var shuffledPieces = shuffle(pieces);
-
 function renderPieces() {
     var container = document.getElementById('puzzle-pieces');
     container.innerHTML = '';
-    shuffledPieces.forEach(function(piece) {
-        var btn = document.createElement('button');
-        btn.className = 'puzzle-piece';
-        btn.type = 'button';
-        btn.innerText = piece;
-
-        // touchstart untuk respons cepat di Android (no 300ms delay)
-        btn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            selectPiece(piece, btn);
-        }, { passive: false });
-
-        // click sebagai fallback
-        btn.addEventListener('click', function() {
-            selectPiece(piece, btn);
-        });
-
-        container.appendChild(btn);
-    });
+    for (var pi = 0; pi < shuffledPieces.length; pi++) {
+        (function(piece) {
+            var btn = document.createElement('button');
+            btn.className = 'puzzle-piece';
+            btn.type = 'button';
+            btn.innerText = piece;
+            btn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                selectPiece(piece, btn);
+            }, { passive: false });
+            btn.addEventListener('click', function() {
+                selectPiece(piece, btn);
+            });
+            container.appendChild(btn);
+        })(shuffledPieces[pi]);
+    }
 }
 
 function selectPiece(piece, btnEl) {
@@ -139,11 +126,9 @@ document.getElementById('btn-gift').addEventListener('click', function() {
     document.getElementById('gift-overlay').classList.add('active');
     launchConfetti();
 });
-
 document.getElementById('close-gift').addEventListener('click', function() {
     document.getElementById('gift-overlay').classList.remove('active');
 });
-
 document.getElementById('gift-overlay').addEventListener('click', function(e) {
     if (e.target === document.getElementById('gift-overlay')) {
         document.getElementById('gift-overlay').classList.remove('active');
@@ -155,209 +140,144 @@ function launchConfetti() {
     var colors = ['#e8527a','#c9a84c','#4ecba0','#f9a8c1','#f0d080','#ffffff'];
     var cx = window.innerWidth / 2;
     var cy = window.innerHeight / 2;
-    var count = window.innerWidth < 500 ? 25 : 45;
-
-    for (var i = 0; i < count; i++) {
+    var count = window.innerWidth < 768 ? 30 : 60;
+    for (var ci = 0; ci < count; ci++) {
         (function(idx) {
             setTimeout(function() {
                 var c = document.createElement('div');
                 c.className = 'confetti-piece';
-                var tx = ((Math.random() - 0.5) * (window.innerWidth * 0.85)).toFixed(0);
-                var ty = ((Math.random() - 0.5) * 380 - 80).toFixed(0);
-                var color = colors[Math.floor(Math.random() * colors.length)];
-                var isCircle = Math.random() > 0.5;
+                var tx = ((Math.random() - 0.5) * window.innerWidth * 0.9).toFixed(0);
+                var ty = ((Math.random() - 0.5) * 420 - 80).toFixed(0);
                 c.style.left = cx + 'px';
                 c.style.top = cy + 'px';
-                c.style.backgroundColor = color;
-                c.style.borderRadius = isCircle ? '50%' : '2px';
-                // CSS custom property untuk animasi
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
                 c.style.setProperty('--tx', tx + 'px');
                 c.style.setProperty('--ty', ty + 'px');
                 document.body.appendChild(c);
                 setTimeout(function() {
                     if (c.parentNode) c.parentNode.removeChild(c);
-                }, 1150);
-            }, idx * 20);
-        })(i);
+                }, 1200);
+            }, idx * 18);
+        })(ci);
     }
 }
 
-// ======================================================
-// MUSIC PLAYER — Web Audio API
-// iOS & Android: AudioContext harus dibuat di dalam
-// direct user gesture (click/touchstart)
-// ======================================================
-
-var audioCtx    = null;
-var isPlaying   = false;
-var masterGain  = null;
-var schedulerTimer = null;
-var nextNoteTime   = 0;
-
-var BPM      = 76;
-var BEAT     = 60 / BPM;
-var BAR      = 4 * BEAT;
-var LOOP_BEATS  = 16;
-var LOOP_SEC    = LOOP_BEATS * BEAT;
-var LOOKAHEAD   = LOOP_SEC * 1.5;
-var TICK_MS     = (LOOP_SEC / 2) * 1000;
-
-var CHORDS = [
-    { root: 261.63, third: 329.63, fifth: 392.00 },
-    { root: 196.00, third: 246.94, fifth: 293.66 },
-    { root: 220.00, third: 261.63, fifth: 329.63 },
-    { root: 174.61, third: 220.00, fifth: 261.63 },
-];
-
-var MELODY = [
-    [392.00, 0.0],[440.00, 0.5],[523.25, 1.0],[440.00, 1.5],
-    [392.00, 2.0],[349.23, 2.75],[392.00, 3.25],
-    [392.00, 4.0],[440.00, 4.5],[392.00, 5.0],[349.23, 5.5],
-    [329.63, 6.0],[293.66, 6.75],
-    [329.63, 8.0],[349.23, 8.5],[392.00, 9.0],[440.00, 9.5],
-    [523.25,10.0],[440.00,10.75],[392.00,11.25],
-    [349.23,12.0],[392.00,12.5],[440.00,13.0],[349.23,13.5],
-    [329.63,14.0],[293.66,15.0],
-];
-
-function createAudioContext() {
-    var Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return null;
-    try { return new Ctx(); } catch(e) { return null; }
-}
-
-function playNote(freq, startTime, duration, type, vol, detune) {
-    if (!audioCtx || audioCtx.state === 'closed') return;
-    type   = type   || 'sine';
-    vol    = vol    || 0.15;
-    detune = detune || 0;
-
-    try {
-        var osc  = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
-
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, startTime);
-        if (detune) osc.detune.setValueAtTime(detune, startTime);
-
-        gain.gain.setValueAtTime(0, startTime);
-        gain.gain.linearRampToValueAtTime(vol, startTime + 0.04);
-        gain.gain.linearRampToValueAtTime(vol * 0.6, startTime + duration * 0.5);
-        gain.gain.linearRampToValueAtTime(0, startTime + duration);
-
-        osc.connect(gain);
-        gain.connect(masterGain);
-
-        var safeStart = Math.max(startTime, audioCtx.currentTime);
-        osc.start(safeStart);
-        osc.stop(safeStart + duration + 0.05);
-    } catch(e) {
-        // abaikan error node yang sudah expired
-    }
-}
-
-function scheduleLoop(t0) {
-    if (!audioCtx || audioCtx.state === 'closed') return;
-    var bar, ch, t, b, notes, freq, i;
-
-    // Pad chords
-    for (bar = 0; bar < 4; bar++) {
-        ch = CHORDS[bar];
-        t  = t0 + bar * BAR;
-        [ch.root, ch.third, ch.fifth, ch.root * 2].forEach(function(f) {
-            playNote(f, t, BAR - 0.1, 'sine', 0.025, (Math.random() * 4 - 2));
-        });
-    }
-    // Arpeggio
-    for (b = 0; b < LOOP_BEATS; b++) {
-        ch = CHORDS[Math.floor(b / 4)];
-        notes = [ch.root, ch.third, ch.fifth, ch.third];
-        t = t0 + b * BEAT;
-        notes.forEach(function(f, idx) {
-            playNote(f * 2, t + idx * (BEAT / 4), BEAT / 4, 'sine', 0.038);
-        });
-    }
-    // Bass
-    for (bar = 0; bar < 4; bar++) {
-        ch = CHORDS[bar];
-        t  = t0 + bar * BAR;
-        playNote(ch.root / 2, t,            BEAT * 1.9, 'sine', 0.08);
-        playNote(ch.root / 2, t + BAR / 2, BEAT * 1.9, 'sine', 0.065);
-    }
-    // Melody
-    MELODY.forEach(function(note) {
-        var f = note[0], beat = note[1];
-        var nt = t0 + beat * BEAT;
-        playNote(f, nt, BEAT * 0.8, 'sine', 0.13);
-        // Harmonic ringan saja — bukan 1.25x (interval minor 3rd yg bikin kasar)
-        playNote(f * 2, nt, BEAT * 0.8, 'sine', 0.03);
-    });
-}
-
-function scheduler() {
-    if (!isPlaying || !audioCtx || audioCtx.state === 'closed') return;
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-    while (nextNoteTime < audioCtx.currentTime + LOOKAHEAD) {
-        scheduleLoop(nextNoteTime);
-        nextNoteTime += LOOP_SEC;
-    }
-    schedulerTimer = setTimeout(scheduler, TICK_MS);
-}
+// ======= MUSIC — Synthesizer =======
+var isPlaying = false;
 
 function startMusic() {
-    if (!audioCtx) {
-        audioCtx = createAudioContext();
-        if (!audioCtx) {
-            alert('Browser kamu tidak mendukung Web Audio 😢');
-            return;
-        }
-        masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
-
-        // DynamicsCompressor = mencegah clipping/distorsi di speaker HP kecil
-        var compressor = audioCtx.createDynamicsCompressor();
-        compressor.threshold.setValueAtTime(-18, audioCtx.currentTime); // mulai compress di -18dB
-        compressor.knee.setValueAtTime(6, audioCtx.currentTime);        // soft knee
-        compressor.ratio.setValueAtTime(4, audioCtx.currentTime);       // 4:1 ratio — halus
-        compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);  // cepat tangkap peak
-        compressor.release.setValueAtTime(0.25, audioCtx.currentTime);  // natural release
-
-        masterGain.connect(compressor);
-        compressor.connect(audioCtx.destination);
-    }
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume().then(function() { _beginPlayback(); });
-    } else {
-        _beginPlayback();
-    }
-}
-
-function _beginPlayback() {
-    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    masterGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.38, audioCtx.currentTime + 1.5);
-    nextNoteTime = audioCtx.currentTime + 0.15;
     isPlaying = true;
-    scheduler();
+    startSynth();
 }
 
 function stopMusic() {
     isPlaying = false;
-    if (schedulerTimer) {
-        clearTimeout(schedulerTimer);
-        schedulerTimer = null;
+    stopSynth();
+}
+
+var audioCtx = null;
+var masterGain = null;
+var schedulerTimer = null;
+var nextNoteTime = 0;
+var BEAT = 60 / 76;
+var BAR  = 4 * BEAT;
+var LOOP_SEC = 16 * BEAT;
+
+var CHORDS = [
+    [261.63, 329.63, 392.00],
+    [196.00, 246.94, 293.66],
+    [220.00, 261.63, 329.63],
+    [174.61, 220.00, 261.63]
+];
+var MELODY = [
+    [392,0],[440,0.5],[523,1],[440,1.5],[392,2],[349,2.75],[392,3.25],
+    [392,4],[440,4.5],[392,5],[349,5.5],[329,6],[293,6.75],
+    [329,8],[349,8.5],[392,9],[440,9.5],[523,10],[440,10.75],[392,11.25],
+    [349,12],[392,12.5],[440,13],[349,13.5],[329,14],[293,15]
+];
+
+function initSynth() {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return false;
+    try {
+        audioCtx = new Ctx();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        var comp = audioCtx.createDynamicsCompressor();
+        comp.threshold.setValueAtTime(-20, audioCtx.currentTime);
+        comp.ratio.setValueAtTime(6, audioCtx.currentTime);
+        masterGain.connect(comp);
+        comp.connect(audioCtx.destination);
+        return true;
+    } catch(e) { return false; }
+}
+
+function pNote(freq, t, dur, vol) {
+    if (!audioCtx) return;
+    try {
+        var o = audioCtx.createOscillator();
+        var g = audioCtx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(vol, t + 0.03);
+        g.gain.linearRampToValueAtTime(0, t + dur);
+        o.connect(g); g.connect(masterGain);
+        var s = Math.max(t, audioCtx.currentTime);
+        o.start(s); o.stop(s + dur + 0.05);
+    } catch(e) {}
+}
+
+function scheduleLoop(t0) {
+    // Melodi saja — lebih ringan, tidak gebresek
+    MELODY.forEach(function(n) {
+        pNote(n[0], t0 + n[1] * BEAT, BEAT * 0.75, 0.12);
+    });
+    // Bass ringan
+    for (var b = 0; b < 4; b++) {
+        var ch = CHORDS[b];
+        pNote(ch[0] / 2, t0 + b * BAR, BAR * 0.9, 0.07);
     }
-    if (masterGain && audioCtx && audioCtx.state !== 'closed') {
+}
+
+function synthScheduler() {
+    if (!isPlaying || !audioCtx) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    while (nextNoteTime < audioCtx.currentTime + LOOP_SEC * 1.2) {
+        scheduleLoop(nextNoteTime);
+        nextNoteTime += LOOP_SEC;
+    }
+    schedulerTimer = setTimeout(synthScheduler, (LOOP_SEC / 2) * 1000);
+}
+
+function startSynth() {
+    if (!audioCtx && !initSynth()) return;
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume().then(function() { _beginSynth(); });
+    } else {
+        _beginSynth();
+    }
+}
+
+function _beginSynth() {
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 1.5);
+    nextNoteTime = audioCtx.currentTime + 0.1;
+    synthScheduler();
+}
+
+function stopSynth() {
+    if (schedulerTimer) { clearTimeout(schedulerTimer); schedulerTimer = null; }
+    if (masterGain && audioCtx) {
         try {
             masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-            masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+            masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
         } catch(e) {}
         setTimeout(function() {
             if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
-        }, 700);
+        }, 600);
     }
 }
 
