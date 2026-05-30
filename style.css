@@ -7,48 +7,50 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     color: #4a4a4a;
+    padding: 15px;
 }
 
 .container {
     perspective: 1000px;
+    width: 100%;
+    max-width: 500px;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
-    max-width: 500px;
-    width: 90%;
+    width: 100%;
     animation: float 6s ease-in-out infinite;
 }
 
 /* Teks */
 .title {
     font-family: 'Pacifico', cursive;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     color: #ff6b81;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: #2f3542;
     margin-bottom: 15px;
     font-weight: 600;
 }
 
 .message {
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
     color: #57606f;
 }
 
@@ -62,15 +64,15 @@ body {
 .cake-area {
     margin-bottom: 15px;
     position: relative;
-    height: 80px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
 }
 
 .cake {
-    width: 80px;
-    height: 50px;
+    width: 60px;
+    height: 40px;
     background: #ffa502;
     border-radius: 5px 5px 0 0;
     position: relative;
@@ -81,51 +83,51 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 20px;
+    height: 15px;
     background: #eccc68;
     border-radius: 5px;
 }
 
 .cream {
     position: absolute;
-    top: -15px;
-    left: 5px;
-    width: 70px;
-    height: 15px;
+    top: -12px;
+    left: 4px;
+    width: 52px;
+    height: 12px;
     background: #ffffff;
-    border-radius: 10px 10px 5px 5px;
+    border-radius: 8px 8px 4px 4px;
 }
 
 .candle {
     position: absolute;
-    top: -45px;
-    left: 35px;
-    width: 10px;
-    height: 30px;
+    top: -35px;
+    left: 26px;
+    width: 8px;
+    height: 23px;
     background: #7bed9f;
 }
 
 .flame {
     position: absolute;
-    top: -55px;
-    left: 37px;
+    top: -43px;
+    left: 27px;
     width: 6px;
-    height: 10px;
+    height: 8px;
     background: #ff6b81;
     border-radius: 50% 50% 20% 20%;
     animation: flicker 1s infinite alternate;
 }
 
-/* Puzzle Styles */
+/* Puzzle Styles - Mobile Friendly */
 .puzzle-container {
-    margin: 20px 0;
-    padding: 15px;
+    margin: 15px 0;
+    padding: 12px;
     background: #f8f9fa;
-    border-radius: 15px;
+    border-radius: 12px;
 }
 
 .puzzle-hint {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #57606f;
     margin-bottom: 10px;
     font-weight: 600;
@@ -135,19 +137,21 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 10px;
 }
 
 .puzzle-piece {
     background: #667eea;
     color: white;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: 0.2s;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    min-width: 32px;
+    text-align: center;
 }
 
 .puzzle-piece:hover {
@@ -156,23 +160,24 @@ body {
 }
 
 .puzzle-piece.used {
-    background: #ccc;
+    background: #ddd;
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .puzzle-answer {
-    min-height: 30px;
-    font-size: 1.2rem;
+    min-height: 25px;
+    font-size: 1rem;
     font-weight: bold;
     color: #2f3542;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
 }
 
 .puzzle-result {
-    margin-top: 10px;
+    margin-top: 8px;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.85rem;
 }
 
 .puzzle-result.correct {
@@ -188,23 +193,25 @@ body {
     background: #ff4757;
     color: white;
     border: none;
-    padding: 12px 30px;
+    padding: 12px 25px;
     border-radius: 25px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: 0.3s;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+    width: 100%;
+    max-width: 200px;
 }
 
 .btn:hover {
     background: #ff6b81;
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 .btn:disabled {
-    background: #ccc;
+    background: #bdc3c7;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -217,46 +224,64 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 15px;
 }
 
 .gift-content {
     background: white;
-    padding: 40px;
+    padding: 25px 20px;
     border-radius: 20px;
     text-align: center;
-    max-width: 80%;
-    animation: popIn 0.5s ease;
+    width: 100%;
+    max-width: 350px;
+    animation: popIn 0.4s ease;
+    margin: 15px;
 }
 
 .gift-content h1 {
     color: #ff4757;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
 }
 
 .gift-content p {
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.5;
     margin-bottom: 10px;
+    color: #57606f;
+}
+
+.gift-content .from {
+    color: #ff4757;
+    font-weight: 600;
+    margin-top: 15px;
 }
 
 .btn-close {
-    margin-top: 20px;
+    margin-top: 18px;
     background: #2f3542;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 25px;
     border-radius: 20px;
     cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-close:hover {
+    background: #3d3d3d;
 }
 
 /* Animasi */
 @keyframes float {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 }
 
@@ -266,9 +291,8 @@ body {
 }
 
 @keyframes popIn {
-    0% { transform: scale(0); }
-    80% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 /* Efek Hati & Confetti */
@@ -310,10 +334,55 @@ body {
     100% { transform: translate(var(--tx), var(--ty)) rotate(720deg); opacity: 0; }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .card { padding: 25px 15px; }
-    .title { font-size: 2rem; }
-    .message { font-size: 0.9rem; }
-    .puzzle-piece { padding: 8px 12px; font-size: 0.9rem; }
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+    .card {
+        padding: 20px 15px;
+    }
+    
+    .title {
+        font-size: 1.6rem;
+    }
+    
+    .name {
+        font-size: 1rem;
+    }
+    
+    .message {
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .puzzle-piece {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        min-width: 28px;
+    }
+}
+
+/* Tablet & Desktop */
+@media (min-width: 600px) {
+    .title {
+        font-size: 2.2rem;
+    }
+    
+    .name {
+        font-size: 1.3rem;
+    }
+    
+    .message {
+        font-size: 1rem;
+    }
+    
+    .card {
+        padding: 35px 30px;
+    }
+    
+    .puzzle-hint {
+        font-size: 1rem;
+    }
 }
