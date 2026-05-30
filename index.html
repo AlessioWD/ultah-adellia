@@ -2,65 +2,130 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Adellia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- viewport-fit=cover: handles iPhone notch & Dynamic Island -->
+    <meta name="theme-color" content="#2a1a2e">
+    <!-- Prevent iOS from auto-detecting phone numbers -->
+    <meta name="format-detection" content="telephone=no">
+    <title>Happy Birthday Adellia 🎂</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Efek hati jatuh -->
-    <div class="hearts-bg"></div>
+    <!-- ===== BACKGROUND ===== -->
+    <div class="bg-layer">
+        <div class="bg-gradient"></div>
+        <div class="stars" id="stars-container"></div>
+        <div class="particles-bg" id="particles-bg"></div>
+    </div>
 
-    <div class="container">
+    <!-- ===== MUSIC PLAYER (fixed bottom-right) ===== -->
+    <div class="music-player">
+        <span class="music-label" id="music-label">Play Lagu Bucin ♥</span>
+        <button class="music-btn" id="music-btn" type="button" aria-label="Play / Pause musik">
+            <span class="music-icon">🎵</span>
+            <span class="music-note">♪</span>
+        </button>
+    </div>
+
+    <!-- ===== MAIN CARD ===== -->
+    <div class="card-wrapper">
         <div class="card">
-            <!-- Bagian Kue -->
+
+            <div class="top-deco">
+                <div class="deco-line"></div>
+                <span class="deco-icon">✦</span>
+                <span class="deco-icon">♡</span>
+                <span class="deco-icon">✦</span>
+                <div class="deco-line"></div>
+            </div>
+
+            <!-- Kue -->
             <div class="cake-area">
-                <div class="cake">
-                    <div class="cream"></div>
-                    <div class="candle"></div>
-                    <div class="flame"></div>
-                </div>
-            </div>
-            
-            <!-- Bagian Teks -->
-            <div class="text-area">
-                <h1 class="title">Happy Birthday 🎉</h1>
-                <h2 class="name">Adellia Putri Fernandess</h2>
-                
-                <p class="message">
-                    <span class="nickname">bubub</span>,<br><br>
-                    Selamat ulang tahun!<br>
-                    Hope your day is as amazing as you are.<br><br>
-                    Stay healthy and keep smiling! 😄
-                </p>
-                
-                <!-- Puzzle Section -->
-                <div class="puzzle-container">
-                    <p class="puzzle-hint">Susun Tanggal Jadian Kita! 📅</p>
-                    <div id="puzzle-pieces" class="puzzle-pieces">
-                        <!-- Pieces akan di-generate oleh JS -->
+                <div class="candles">
+                    <div class="candle-wrap">
+                        <div class="flame"></div>
+                        <div class="candle-body pink"></div>
                     </div>
-                    <div id="puzzle-answer" class="puzzle-answer"></div>
-                    <p id="puzzle-result" class="puzzle-result"></p>
+                    <div class="candle-wrap">
+                        <div class="flame"></div>
+                        <div class="candle-body gold"></div>
+                    </div>
+                    <div class="candle-wrap">
+                        <div class="flame"></div>
+                        <div class="candle-body mint"></div>
+                    </div>
                 </div>
-                
-                <!-- Tombol Buka Kejutan -->
-                <button id="btn-gift" class="btn" disabled>Buka Kejutan 🎁</button>
+                <div class="cake-top"></div>
+                <div class="cream-swiggles swiggles-top">
+                    <div class="swiggle"></div>
+                    <div class="swiggle"></div>
+                    <div class="swiggle"></div>
+                </div>
+                <div class="cake-middle"></div>
+                <div class="cream-swiggles">
+                    <div class="swiggle"></div>
+                    <div class="swiggle"></div>
+                    <div class="swiggle"></div>
+                    <div class="swiggle"></div>
+                </div>
+                <div class="cake-bottom"></div>
+                <div class="cake-plate"></div>
             </div>
+
+            <p class="subtitle">✦ A Birthday Wish ✦</p>
+            <h1 class="title">Happy Birthday</h1>
+            <h2 class="name">Adellia Putri Fernanda</h2>
+
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span class="divider-icon">❧</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <p class="message">
+                <span class="nickname">Bubub</span>,<br><br>
+                Selamat ulang tahun! Semoga hari ini seindah senyumanmu.
+                Terus jadi versi terbaik dirimu, tetap sehat, bahagia,
+                dan terus bersinar! 🌟
+            </p>
+
+            <!-- Puzzle -->
+            <div class="puzzle-container">
+                <p class="puzzle-label">✦ Mini Challenge ✦</p>
+                <p class="puzzle-hint">Susun tanggal jadian kita 💕</p>
+                <div id="puzzle-pieces" class="puzzle-pieces"></div>
+                <div class="puzzle-answer-box">
+                    <div id="puzzle-answer" class="puzzle-answer"></div>
+                </div>
+                <p id="puzzle-result" class="puzzle-result"></p>
+                <button class="reset-btn" type="button" onclick="resetPuzzle()">↺ Reset</button>
+            </div>
+
+            <button id="btn-gift" class="btn-gift" type="button" disabled>
+                <span class="btn-icon">🎁</span>
+                <span>Buka Kejutan</span>
+            </button>
+
         </div>
     </div>
 
-    <!-- Modal Kejutan -->
-    <div id="gift-overlay" class="overlay">
-        <div class="gift-content">
-            <h1>🎂 Happy Birthday! 🎂</h1>
-            <p>Adellia,</p>
-            <p>Selamat ulang tahun yang ke-21!<br>
-            Hope all your wishes come true this year.<br>
-            Mari kita buat banyak kenangan baru!</p>
-            <p class="from">Love, Pacar Kamu ❤️</p>
-            <button id="close-gift" class="btn-close">Tutup</button>
+    <!-- ===== MODAL ===== -->
+    <div id="gift-overlay" class="overlay" role="dialog" aria-modal="true">
+        <div class="gift-card">
+            <span class="gift-emoji">🎂</span>
+            <h2 class="gift-title">Selamat Ulang Tahun!</h2>
+            <div class="gift-age">ke-<span>21</span> tahun</div>
+            <p class="gift-message">
+                <span class="gift-highlight">Bubub</span>, kamu sudah bertumbuh menjadi
+                seseorang yang luar biasa. Semoga di usia 21 ini, semua impian dan
+                harapanmu satu persatu mulai terwujud. 🌸<br><br>
+                Terima kasih sudah ada, terima kasih sudah mau berbagi cerita, dan
+                terima kasih sudah jadi bagian terpenting dari hidupku. 💖
+            </p>
+            <p class="gift-from">— With all my love, Pacar Kamu 🌹</p>
+            <button id="close-gift" class="btn-close" type="button">Tutup ✕</button>
         </div>
     </div>
 
